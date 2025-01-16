@@ -1,4 +1,9 @@
 import {
+  HttpClientModule,
+  provideHttpClient,
+  withInterceptors,
+} from '@angular/common/http';
+import {
   ApplicationConfig,
   importProvidersFrom,
   provideZoneChangeDetection,
@@ -8,7 +13,7 @@ import { provideRouter } from '@angular/router';
 import Aura from '@primeng/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
-import { HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,5 +26,8 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     importProvidersFrom(HttpClientModule),
+    provideHttpClient(
+      withInterceptors([AuthInterceptor.prototype.authIntercept])
+    ),
   ],
 };
